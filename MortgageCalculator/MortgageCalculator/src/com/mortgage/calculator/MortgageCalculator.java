@@ -6,52 +6,90 @@ import java.util.Currency;
 import java.util.Locale;
 
 public class MortgageCalculator implements Application {
-
-
+    static final int MONTHS_IN_A_YEAR = 12;
     private final Display display;
     private final Input input;
     private final InputValidator validator;
     private final StringToFloatConverter converter;
-    private final Mortgage mortgage;
 
     public MortgageCalculator(Display display, Input input, InputValidator validator, StringToFloatConverter converter) {
         this.display = display;
         this.input = input;
         this.validator = validator;
         this.converter = converter;
-        this.mortgage = new Mortgage();
     }
 
     public void run() {
         this.display.newLineDisplay("Welcome");
-        mortgage.principal = getEntry("Principal: ",
-                "Principal needs to be a number, please provide a valid principal amount.");
-        mortgage.annualInterestRate = getEntry("Annual Interest Rate: ",
-                "Annual interest rate needs to be a number, please provide a valid annual interest rate amount.");
-        mortgage.period = getEntry("Period (in Years): ",
-                "Period needs to be a number, please provide a valid period.");
-        this.mortgage.monthlyPayments = Math.round(calculateMortgageMonthlyPayment());
         var currency = Currency.getInstance(Locale.getDefault());
-        this.display.newLineDisplay(String.format("Your monthly payment would be about %s%s",
-                currency.getSymbol(), this.mortgage.monthlyPayments));
+        float principal = getEntry("Principal (" + currency.getSymbol() + "1K - " + currency.getSymbol() + "1M): "
+                , "Principal", 1_000, 1_000_000, true);
+        float annualInterestRate = getEntry("Annual Interest Rate: ",
+                "Annual interest rate", 0.1F, 12.5F, false);
+        var mortgagePeriod = getEntry("Period (in Years): ", "Period (in Years)", 1, 35, true);
+        float monthlyPayments = Math.round(calculateMortgageMonthlyPayment(principal, annualInterestRate, mortgagePeriod));
+        displayMortgageSection(monthlyPayments);
+        displayPaymentSchedule(principal, annualInterestRate, mortgagePeriod);
     }
 
-    private float getEntry(String text, String invalidText) {
+
+    private float getEntry(String text, String invalidText, float lowerLimit, float upperLimit, boolean shouldDisplayAsInteger) {
         do {
             this.display.display(text);
             var entry = this.input.getEntry();
-            if (validator.isFloat(entry)) {
-                return converter.getFloat(entry);
-            } else {
-                this.display.newLineDisplay(invalidText);
+            if (!validator.isFloat(entry)) {
+                showInvalidValueMessage(invalidText, lowerLimit, upperLimit, shouldDisplayAsInteger);
+                continue;
             }
+            var convertedValue = converter.getFloat(entry);
+            if (convertedValue >= lowerLimit && convertedValue <= upperLimit)
+                return convertedValue;
+
+            showInvalidValueMessage(invalidText, lowerLimit, upperLimit, shouldDisplayAsInteger);
         } while (true);
     }
 
-    private double calculateMortgageMonthlyPayment() {
-        final int Months_IN_A_YEAR = 12;
-        var monthlyInterestRate = ((mortgage.annualInterestRate) / 100) / Months_IN_A_YEAR;
-        var partOfCalculation = Math.pow(1 + monthlyInterestRate, mortgage.period * Months_IN_A_YEAR);
-        return mortgage.principal * ((monthlyInterestRate * partOfCalculation) / ((partOfCalculation) - 1));
+    private void showInvalidValueMessage(String invalidText, float lowerLimit, float upperLimit, boolean shouldDisplayAsInteger) {
+        this.display.newLineDisplay(invalidText + " needs to be a number between "
+                + getValue(lowerLimit, shouldDisplayAsInteger) + " and " +
+                getValue(upperLimit, shouldDisplayAsInteger) + " please provide a valid " + invalidText);
+    }
+
+    private String getValue(float value, boolean shouldDisplayAsInteger) {
+        return "" + (shouldDisplayAsInteger ? Integer.toString(Math.round(value)) : value);
+    }
+
+    private double calculateMortgageMonthlyPayment(float principal, float annualInterestRate, float mortgagePeriod) {
+        var monthlyInterestRate = getMonthlyInterest(annualInterestRate);
+        var partOfCalculation = Math.pow((1 + monthlyInterestRate), mortgagePeriod * MONTHS_IN_A_YEAR);
+        return principal * ((monthlyInterestRate * partOfCalculation) / ((partOfCalculation) - 1));
+    }
+
+    private float getMonthlyInterest(float annualInterestRate) {
+        final int PERCENT = 100;
+        return (annualInterestRate / PERCENT) / MONTHS_IN_A_YEAR;
+    }
+
+    private void displayMortgageSection(float monthlyPayments) {
+        this.display.displayHeader("MORTGAGE", '—');
+        this.display.displayMoney("Monthly payments:", monthlyPayments);
+    }
+
+    private void displayPaymentSchedule(float principal, float annualInterestRate, float mortgagePeriod) {
+        this.display.displayHeader("PAYMENT SCHEDULE", '—');
+        var totalPaymentsToMake = Math.round(mortgagePeriod * MONTHS_IN_A_YEAR);
+        double currentBalance;
+        for (var paymentsMade = 1; paymentsMade <= totalPaymentsToMake; paymentsMade++) {
+            currentBalance = getMortgageBalance(principal, annualInterestRate, totalPaymentsToMake, paymentsMade);
+            this.display.displayMoney("", currentBalance);
+        }
+    }
+
+    private double getMortgageBalance(float principal, float annualInterestRate, int numberOfPayments, int paymentsMade) {
+        var monthlyInterestRatePlusOne = 1 + getMonthlyInterest(annualInterestRate);
+        var currentBalanceCalTopPart = principal * ((Math.pow(monthlyInterestRatePlusOne, numberOfPayments))
+                - (Math.pow(monthlyInterestRatePlusOne, paymentsMade)));
+        var currentBalanceCalBottomPart = (Math.pow(monthlyInterestRatePlusOne, numberOfPayments)) - 1;
+        return currentBalanceCalTopPart / currentBalanceCalBottomPart;
     }
 }
