@@ -1,4 +1,4 @@
-package com.mortgage.calculator.interfaces;
+package com.mortgage.app.interfaces;
 
 public interface Application {
     void run();

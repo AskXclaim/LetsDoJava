@@ -1,8 +1,6 @@
-package com.mortgage.calculator.instances;
+package com.mortgage.app.instances;
 
-import com.mortgage.calculator.interfaces.Display;
-
-import java.text.DecimalFormat;
+import com.mortgage.app.interfaces.Display;
 import java.util.Currency;
 import java.util.Locale;
 
