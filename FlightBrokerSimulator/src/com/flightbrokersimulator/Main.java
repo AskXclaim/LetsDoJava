@@ -9,7 +9,7 @@ public class Main {
         try {
             var simulator = new FlightSimulator();
             simulator.simulate();
-            Thread.sleep(5000);
+            Thread.sleep(10_000);
         } catch (InterruptedException e) {
             out.println(e.getMessage());
         }

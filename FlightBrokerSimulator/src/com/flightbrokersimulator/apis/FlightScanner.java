@@ -13,7 +13,7 @@ public class FlightScanner implements FlightInformation {
 
     @Override
     public CompletableFuture<FlightDetail> getQuoteOfTheDayAsync() throws InterruptedException {
-        Thread.sleep(Flight.getRandomWholeNumber(0,3000));
-        return CompletableFuture.supplyAsync(this::getQuoteOfTheDay);
+        Thread.sleep(Flight.getRandomWholeNumber(1_000,5_000));
+        return CompletableFuture.supplyAsync(()->Flight.getRandomFlightDetail(this));
     }
 }
