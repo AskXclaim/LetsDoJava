@@ -17,7 +17,7 @@ public class UserService {
     public void registerUser(User user){
         try {
             userRepository.save(user);
-            notificationService.send("User with name:" +user.name+" created","some@email.com");
+            notificationService.send("User with name:" +user.getName()+" created","some@email.com");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
