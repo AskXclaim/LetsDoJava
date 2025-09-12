@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: store
+    host: localhost
+    port: 8000
+
+stripe:
+  apiUrl: https://api.stripe.com
+  timeout: 1000
+
+paypal:
+  apiUrl: https://api.paypal.com
+  timeout: 1000
+
