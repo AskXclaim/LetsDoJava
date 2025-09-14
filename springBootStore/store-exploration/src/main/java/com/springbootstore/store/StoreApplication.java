@@ -1,6 +1,5 @@
 package com.springbootstore.store;
 
-import com.springbootstore.store.services.OrderService;
 import com.springbootstore.store.services.UserService;
 import com.springbootstore.store.services.models.User;
 import org.springframework.boot.SpringApplication;

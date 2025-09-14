@@ -2,8 +2,6 @@ package com.springbootstore.store.services.notifications;
 
 import com.springbootstore.store.services.interfaces.NotificationService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 
 import static java.lang.System.*;
 

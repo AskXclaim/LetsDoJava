@@ -3,7 +3,10 @@ spring:
     name: store
     host: localhost
     port: 8000
-
+  datasource:
+    url: jdbc:mysql://localhost:3306/store?createDatabaseIfNotExist=true
+    username: root
+    password: Charis01
 stripe:
   apiUrl: https://api.stripe.com
   timeout: 1000
