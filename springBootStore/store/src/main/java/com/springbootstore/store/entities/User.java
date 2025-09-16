@@ -37,4 +37,13 @@ public class User {
     @ManyToMany(mappedBy = "users")
     @Builder.Default
     private List<Tag> tags = new ArrayList<>();
+
+    public void addAddress(Address address) {
+        this.addresses.add(address);
+        address.setUser(this);
+    }
+    public void removeAddress(Address address) {
+        this.addresses.remove(address);
+        address.setUser(null);
+    }
 }
