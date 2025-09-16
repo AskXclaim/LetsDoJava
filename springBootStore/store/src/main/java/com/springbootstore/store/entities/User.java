@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -36,7 +38,7 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     @Builder.Default
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new LinkedHashSet<>();
 
     public void addAddress(Address address) {
         this.addresses.add(address);
