@@ -6,6 +6,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -27,8 +29,14 @@ public class Product {
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     @ToString.Exclude
     private Category category;
+
+    @ManyToMany
+    @JoinTable(name = "wishlist",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> wishlist = new HashSet<>();
 }

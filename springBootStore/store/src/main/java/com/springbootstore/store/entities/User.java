@@ -40,6 +40,10 @@ public class User {
     @Builder.Default
     private Set<Tag> tags = new LinkedHashSet<>();
 
+    @ManyToMany(mappedBy = "products")
+    @Builder.Default
+    private Set<Product> products = new LinkedHashSet<>();
+
     public void addAddress(Address address) {
         this.addresses.add(address);
         address.setUser(this);
@@ -47,5 +51,12 @@ public class User {
     public void removeAddress(Address address) {
         this.addresses.remove(address);
         address.setUser(null);
+    }
+
+    public void addTag(String tagName) {
+        Tag tag = new Tag();
+        tag.setName(tagName);
+        this.tags.add(tag);
+        tag.getUsers().add(this);
     }
 }
