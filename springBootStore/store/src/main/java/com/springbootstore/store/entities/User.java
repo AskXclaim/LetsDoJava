@@ -42,7 +42,7 @@ public class User {
 
     @ManyToMany(mappedBy = "products")
     @Builder.Default
-    private Set<Product> products = new LinkedHashSet<>();
+    private Set<Product> wishlist = new LinkedHashSet<>();
 
     public void addAddress(Address address) {
         this.addresses.add(address);
