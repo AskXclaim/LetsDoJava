@@ -1,6 +1,6 @@
 create table IF NOT EXISTS store.profiles
 (
-    id             bigint                       not null primary key,
+    id             bigint auto_increment        not null primary key,
     user_id        bigint                       not null,
     bio            varchar(255) charset utf8mb4 null,
     phone_number   varchar(15) charset utf8mb4  null,

@@ -38,5 +38,5 @@ public class Product {
     @JoinTable(name = "wishlist",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> wishlist = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 }

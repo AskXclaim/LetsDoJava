@@ -4,7 +4,7 @@ spring:
     host: localhost
     port: 8000
   datasource:
-    url: jdbc:mysql://localhost:3306/store?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/store-exploration?createDatabaseIfNotExist=true
     username: root
     password: Charis01
 stripe:

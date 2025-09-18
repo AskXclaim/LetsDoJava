@@ -6,5 +6,5 @@ create table products
     price       decimal(10, 2) not null,
     constraint products_categories_id_fk
         foreign key (category_id) references categories (id)
-            on delete cascade
+            on delete restrict
 );

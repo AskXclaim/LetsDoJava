@@ -33,14 +33,13 @@ public class User {
     private List<Address> addresses = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
-    @Builder.Default
-    private Profile profile = new Profile();
+    private Profile profile;
 
     @ManyToMany(mappedBy = "users")
     @Builder.Default
     private Set<Tag> tags = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "users")
     @Builder.Default
     private Set<Product> wishlist = new LinkedHashSet<>();
 
