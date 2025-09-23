@@ -43,4 +43,14 @@ public class ProductService {
             out.println("Product with name: " + product.getName() + " already exists");
     }
 
+    @Transactional
+    public void deleteProduct(String productName) {
+        var product = productRepository.findByNameIgnoreCase(productName).orElse(null);
+        if (product == null) {
+            out.println("Product with name: " + productName + " does not exist");
+        }else {
+            productRepository.delete(product);
+            out.println(product.getName() + " has been deleted");
+        }
+    }
 }

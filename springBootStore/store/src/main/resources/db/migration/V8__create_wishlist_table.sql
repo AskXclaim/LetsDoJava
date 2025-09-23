@@ -6,7 +6,9 @@ CREATE TABLE wishlist
 );
 
 ALTER TABLE wishlist
-    ADD CONSTRAINT fk_wishlist_on_product FOREIGN KEY (product_id) REFERENCES products (id);
+ADD CONSTRAINT fk_wishlist_on_product
+        FOREIGN KEY (product_id) REFERENCES products (id)
+            ON DELETE CASCADE ;
 
 ALTER TABLE wishlist
     ADD CONSTRAINT fk_wishlist_on_user FOREIGN KEY (user_id) REFERENCES users (id);
