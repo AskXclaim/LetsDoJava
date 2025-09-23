@@ -28,18 +28,21 @@ public class User {
     @Column(nullable = false, name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @Builder.Default
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private Profile profile;
 
     @ManyToMany(mappedBy = "users")
     @Builder.Default
     private Set<Tag> tags = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany
+    @JoinTable(name = "wishlist",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     @Builder.Default
     private Set<Product> wishlist = new LinkedHashSet<>();
 
@@ -47,6 +50,7 @@ public class User {
         this.addresses.add(address);
         address.setUser(this);
     }
+
     public void removeAddress(Address address) {
         this.addresses.remove(address);
         address.setUser(null);
@@ -57,5 +61,27 @@ public class User {
         tag.setName(tagName);
         this.tags.add(tag);
         tag.getUsers().add(this);
+    }
+
+    public void removeTag(String tagName) {
+        var tagsToRemove = this.tags.stream().filter(tag -> tag.getName().equals(tagName));
+        tagsToRemove.forEach(tag -> {
+            this.tags.remove(tag);
+            tag.getUsers().remove(this);
+        });
+    }
+
+    public void addProfile(Profile profile) {
+        this.profile = profile;
+        profile.setUser(this);
+    }
+
+    public void removeProfile(Profile profile) {
+        this.profile = null;
+        profile.setUser(null);
+    }
+
+    public void addToWishlist(Product product) {
+        this.wishlist.add(product);
     }
 }

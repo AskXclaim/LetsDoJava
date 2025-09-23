@@ -1,8 +1,10 @@
 package com.springbootstore.store.services;
 
 import com.springbootstore.store.entities.Address;
+import com.springbootstore.store.entities.Product;
 import com.springbootstore.store.entities.Profile;
 import com.springbootstore.store.entities.User;
+import com.springbootstore.store.repositories.ProductRepository;
 import com.springbootstore.store.repositories.ProfileRepository;
 import com.springbootstore.store.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -11,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.function.*;
 
 import static java.lang.System.*;
 
@@ -20,6 +23,7 @@ import static java.lang.System.*;
 public class UserService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+    private final ProductRepository productRepository;
 
     // This is currently not working but should be fixed soonest.
     @Transactional
@@ -38,8 +42,6 @@ public class UserService {
                 .city("Leeds").street("street one")
                 .postalZipCode("postal one")
                 .build();
-        var addresses = new ArrayList<Address>();
-        addresses.add(address);
 
         var profile = Profile.builder()
                 .bio("Happy person").phone("123456789")
@@ -50,18 +52,11 @@ public class UserService {
                 .name("Kola")
                 .password("1234")
                 .email("somepassword@some.com")
-                .profile(profile)
-                .addresses(addresses)
                 .build();
 
+        newUser.addAddress(address);
+        newUser.addProfile(profile);
         userRepository.save(newUser);
-//
-//
-//        newUser.setProfile(profile);
-//        profile.setUser(newUser);
-
-//        profileRepository.save(profile);
-
     }
 
     @Transactional
@@ -72,5 +67,33 @@ public class UserService {
 
         Profile profile = profileRepository.findFirstBy();
         out.println(profile);
+    }
+
+    @Transactional
+    public void removeUserEntity(long id) {
+        var user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            userRepository.delete(user);
+            out.println("User with id " + id + " has been deleted");
+        }
+    }
+
+    @Transactional
+    public void addProductToFavourite(Long userId,String productName) {
+        var productToAdd = productRepository.findByNameIgnoreCase(productName).orElse(null);
+        if (productToAdd != null) {
+            var user = userRepository.findUserById(userId).orElseThrow(()-> new RuntimeException("User with id " + userId + " not found"));
+            if (user != null) {
+                user.addToWishlist(productToAdd);
+                userRepository.save(user);
+                out.println("Product: '" + productToAdd.getName() + "' has been added to favourites");
+                out.println(user);
+            }else {
+                out.println("User with id " + userId + " not found");
+            }
+        }else{
+            out.println("Product with name:'"+productName+"' not found");
+
+        }
     }
 }

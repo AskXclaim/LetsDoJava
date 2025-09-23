@@ -6,8 +6,6 @@ create table IF NOT EXISTS store.profiles
     phone_number   varchar(15) charset utf8mb4  null,
     date_of_birth  date                         not null,
     loyalty_points int unsigned default '0'     null,
-    constraint profiles_pk_2
-        unique (user_id),
     constraint profiles_users_id_fk
         foreign key (user_id) references store.users (id)
 );

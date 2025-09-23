@@ -34,9 +34,19 @@ public class Product {
     @ToString.Exclude
     private Category category;
 
-    @ManyToMany
-    @JoinTable(name = "wishlist",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(mappedBy = "wishlist")
     private Set<User> users = new HashSet<>();
+
+    public void addCategory(String categoryName) {
+        if(categoryName==null || categoryName.isBlank()){
+            throw new IllegalArgumentException("Category name cannot be null or blank");
+        }
+        this.category = Category.builder().name(categoryName.trim()).build();
+    }
+    public void addCategory(Category category) {
+        if(category==null){
+            throw new IllegalArgumentException("Category cannot be null");
+        }
+        this.category = category;
+    }
 }
