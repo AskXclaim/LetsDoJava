@@ -96,4 +96,9 @@ public class UserService {
 
         }
     }
+
+    public void addUserWithProfile(User user, Profile profile) {
+        user.addProfile(profile);
+        userRepository.save(user);
+    }
 }
