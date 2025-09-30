@@ -1,3 +1,11 @@
 spring:
   application:
     name: api-fundamental
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/apiFundamental?createDatabaseIfNotExist=true
+    username: root
+    password: Charis01
+server:
+  port: 8081
