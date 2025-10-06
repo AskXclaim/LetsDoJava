@@ -21,7 +21,7 @@ public class Profile {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id", nullable = false)
     private User users;

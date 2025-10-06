@@ -1,0 +1,21 @@
+meta {
+  name: Get-users
+  type: http
+  seq: 1
+}
+
+get {
+  url: Http://localhost:8081/users?sortBy=email&pageRequest.page=0&pageRequest.size=5
+  body: none
+  auth: inherit
+}
+
+params:query {
+  sortBy: email
+  pageRequest.page: 0
+  pageRequest.size: 5
+}
+
+settings {
+  encodeUrl: true
+}
