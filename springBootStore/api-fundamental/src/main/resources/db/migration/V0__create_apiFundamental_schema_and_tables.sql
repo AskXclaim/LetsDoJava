@@ -27,14 +27,14 @@ BEGIN
     CREATE TABLE users
     (
         id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-        username   VARCHAR(50)  NOT NULL UNIQUE,
+        name   VARCHAR(50)  NOT NULL UNIQUE,
         email      VARCHAR(100) NOT NULL UNIQUE,
         password   VARCHAR(50)  NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
     -- Indexes for faster lookups on common fields
-    CREATE INDEX idx_users_username ON users (username);
+    CREATE INDEX idx_users_name ON users (name);
     CREATE INDEX idx_users_email ON users (email);
     CREATE INDEX idx_users_created_at ON users (created_at);
 

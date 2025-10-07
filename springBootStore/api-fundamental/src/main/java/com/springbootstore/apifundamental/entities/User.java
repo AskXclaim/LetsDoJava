@@ -1,8 +1,7 @@
 package com.springbootstore.apifundamental.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -11,16 +10,19 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "users", schema = "apiFundamental")
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, length = 50)
-    private String username;
+    @Column(name = "name", nullable = false, length = 50)
+    private String name;
 
     @Column(name = "email", nullable = false, length = 100)
     private String email;
