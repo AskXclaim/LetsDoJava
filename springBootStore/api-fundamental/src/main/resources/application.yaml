@@ -8,4 +8,4 @@ spring:
     username: root
     password: Charis01
 server: { port: 8081 }
-debug: true
+debug: false

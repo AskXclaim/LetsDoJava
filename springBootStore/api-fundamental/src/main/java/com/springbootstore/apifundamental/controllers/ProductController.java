@@ -54,7 +54,15 @@ public class ProductController {
     @GetMapping("product")
     public Response getProductById(@RequestParam Long id) {
         try {
+            if (id <= 0) {
+                return getResponse(new ResponseEntity<>( HttpStatus.BAD_REQUEST));
+            }
+
             var result = productService.getProductById(id).orElse(null);
+            if (result == null) {
+                return getResponse(new ResponseEntity<>( HttpStatus.NOT_FOUND));
+            }
+
             var productDto = productMapper.productToProductDto(result);
 
             return getResponse(new ResponseEntity<>(productDto, HttpStatus.OK));

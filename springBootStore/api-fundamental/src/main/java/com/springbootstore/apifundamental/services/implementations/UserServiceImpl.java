@@ -1,4 +1,4 @@
-package com.springbootstore.apifundamental.services;
+package com.springbootstore.apifundamental.services.implementations;
 
 import com.springbootstore.apifundamental.dtos.PageRequest;
 import com.springbootstore.apifundamental.entities.User;
