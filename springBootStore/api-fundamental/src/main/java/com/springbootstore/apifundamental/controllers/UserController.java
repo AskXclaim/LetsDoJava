@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
+import static com.springbootstore.apifundamental.utilities.ResponseUtility.getResponse;
+import static com.springbootstore.apifundamental.utilities.ResponseUtility.getExceptionCaseResponseEntity;
+
 @AllArgsConstructor
 @RestController
 public class UserController {
@@ -28,7 +31,7 @@ public class UserController {
             var userDtos = new ArrayList<UserDto>();
             users.forEach(user -> userDtos.add(userMapper.userToUserDto(user)));
 
-            return new ResponseEntity<>(getBuild(userDtos), HttpStatus.OK);
+            return new ResponseEntity<>(getResponse(userDtos), HttpStatus.OK);
         } catch (Exception exception) {
             return getExceptionCaseResponseEntity(exception);
         }
@@ -43,26 +46,18 @@ public class UserController {
     public ResponseEntity<Response> getUserById(@PathVariable Long id) {
         try {
             if (id <= 0) {
-                return new ResponseEntity<>(getBuild("Please enter a valid user id"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(getResponse("Please enter a valid user id"), HttpStatus.BAD_REQUEST);
             }
             var response = userService.findById(id).orElse(null);
             if (response == null) {
-                return new ResponseEntity<>(getBuild("User not found"), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(getResponse("User not found"), HttpStatus.NOT_FOUND);
             }
             var userDto = userMapper.userToUserDto(response);
-            return new ResponseEntity<>(getBuild(userDto), HttpStatus.OK);
+            return new ResponseEntity<>(getResponse(userDto), HttpStatus.OK);
 
         } catch (Exception exception) {
             return getExceptionCaseResponseEntity(exception);
         }
     }
-
-
-    private Response getBuild(Object item) {
-        return Response.builder().data(item).build();
-    }
-
-    private ResponseEntity<Response> getExceptionCaseResponseEntity(Exception exception) {
-        return new ResponseEntity<>(getBuild(exception.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 }
+

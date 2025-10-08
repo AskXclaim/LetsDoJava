@@ -1,17 +1,17 @@
 meta {
-  name: get-User-By-Id
+  name: get-product-by-categoryId copy
   type: http
-  seq: 3
+  seq: 4
 }
 
 get {
-  url: Http://localhost:8081/user?id=5
+  url: http://localhost:8081/product?id=1
   body: none
   auth: inherit
 }
 
 params:query {
-  id: 5
+  id: 1
 }
 
 settings {

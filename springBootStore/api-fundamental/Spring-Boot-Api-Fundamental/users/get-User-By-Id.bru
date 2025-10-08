@@ -1,0 +1,19 @@
+meta {
+  name: get-User-By-Id
+  type: http
+  seq: 2
+}
+
+get {
+  url: Http://localhost:8081/user?id=5
+  body: none
+  auth: inherit
+}
+
+params:query {
+  id: 5
+}
+
+settings {
+  encodeUrl: true
+}

@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class Response {
+public class  Response {
     private Object data;
 }

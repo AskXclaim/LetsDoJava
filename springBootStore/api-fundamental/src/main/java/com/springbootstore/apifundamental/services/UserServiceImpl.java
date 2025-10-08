@@ -3,18 +3,19 @@ package com.springbootstore.apifundamental.services;
 import com.springbootstore.apifundamental.dtos.PageRequest;
 import com.springbootstore.apifundamental.entities.User;
 import com.springbootstore.apifundamental.repositories.UserRepository;
+import com.springbootstore.apifundamental.services.interfaces.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 
+import static com.springbootstore.apifundamental.utilities.RepositoryUtility.getEntities;
 import static com.springbootstore.apifundamental.utilities.RequestParams.getReposPageRequest;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements com.springbootstore.apifundamental.services.interfaces.UserService {
+public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
@@ -29,10 +30,19 @@ public class UserServiceImpl implements com.springbootstore.apifundamental.servi
 
     @Override
     public Iterable<User> findAll(String sortBy, PageRequest pageRequest) {
-        var reposPageRequest = getReposPageRequest(sortBy, pageRequest);
+        var sortByValues = getSortByValues();
+        var reposPageRequest = getReposPageRequest(sortBy, sortByValues, pageRequest);
         var users = userRepository.findAll(reposPageRequest);
-        return getUsers(users);
+        return getEntities(users);
     }
+
+    private LinkedHashSet<String> getSortByValues() {
+        var sortByValues = new LinkedHashSet<String>();
+        sortByValues.add("name");
+        sortByValues.add("email");
+        return sortByValues;
+    }
+
 
     @Override
     public Optional<User> findById(Long userId) {
@@ -40,10 +50,4 @@ public class UserServiceImpl implements com.springbootstore.apifundamental.servi
     }
 
 
-    private static List<User> getUsers(Page<User> users) {
-        if (users.isEmpty()) {
-            return List.of();
-        }
-        return users.getContent();
-    }
 }
