@@ -1,4 +1,4 @@
-package org.BestWeatherFinder.domain.contracts.models;
+package org.BestWeatherFinder.infrastructure.services.models;
 
 import lombok.Builder;
 import org.BestWeatherFinder.infrastructure.services.weather.enums.City;
@@ -7,8 +7,10 @@ import org.BestWeatherFinder.infrastructure.services.weather.enums.TemperatureUn
 
 @Builder
 public record WeatherForecast(
-    City city,
-    Forecast forecast,
-    double temperature,
-    TemperatureUnit temperatureUnit
-) {}
+        String serviceProvider,
+        City city,
+        Forecast forecast,
+        double temperature,
+        TemperatureUnit temperatureUnit
+) {
+}
