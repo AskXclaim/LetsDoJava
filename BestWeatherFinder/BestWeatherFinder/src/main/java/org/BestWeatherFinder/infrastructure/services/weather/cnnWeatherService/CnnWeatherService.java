@@ -24,6 +24,7 @@ public class CnnWeatherService implements WeatherService {
     @Override
     public WeatherForecast getWeatherForecast(City city) {
         messageService.send("Getting data from CNN Weather Service...");
+        WeatherServiceUtility.simulateFailure("CNN Weather Service");
         double temperature = WeatherServiceUtility.getTemperature();
 
         return WeatherServiceUtility.getWeatherForecast("CNN", city, temperature);

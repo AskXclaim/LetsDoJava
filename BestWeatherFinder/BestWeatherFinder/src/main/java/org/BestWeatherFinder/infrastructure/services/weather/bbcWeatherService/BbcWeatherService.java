@@ -20,6 +20,7 @@ public class BbcWeatherService implements WeatherService {
     @Override
     public WeatherForecast getWeatherForecast(City city) {
         messageService.send("Getting data from BBC Weather Service...");
+        WeatherServiceUtility.simulateFailure("BBC Weather Service");
         return WeatherServiceUtility.getWeatherForecast("BBC",city, WeatherServiceUtility.getTemperature());
     }
 

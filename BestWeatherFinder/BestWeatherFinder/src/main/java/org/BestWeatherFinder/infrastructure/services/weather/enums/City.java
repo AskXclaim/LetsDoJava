@@ -1,5 +1,6 @@
 package org.BestWeatherFinder.infrastructure.services.weather.enums;
 
+import org.BestWeatherFinder.domain.exceptions.CityNotFoundException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public enum City {
@@ -21,7 +22,7 @@ public enum City {
         if (City.isValidCity(city.toUpperCase())) {
             return City.valueOf(city.toUpperCase());
         }
-        throw new IllegalArgumentException("Invalid city");
+        throw new CityNotFoundException(city);
     }
 
     public static City getRandomCity() {

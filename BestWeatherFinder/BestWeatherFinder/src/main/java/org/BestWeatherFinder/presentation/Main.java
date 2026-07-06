@@ -22,10 +22,19 @@ public class Main {
         var cnnUserCase = new GetWeatherUserCase(cnnWeatherService);
 
         var started = LocalDateTime.now();
-        CompletableFuture.allOf(bbcUserCase.execute("Leeds")
-                                .thenAcceptAsync(out::println),
+        CompletableFuture.allOf(
+                        bbcUserCase.execute("Leeds")
+                                .thenAcceptAsync(out::println)
+                                .exceptionally(ex -> {
+                                    System.err.println("Error fetching weather from BBC: " + ex.getCause().getMessage());
+                                    return null;
+                                }),
                         cnnUserCase.execute("Liverpool")
-                                .thenAcceptAsync(out::println))
+                                .thenAcceptAsync(out::println)
+                                .exceptionally(ex -> {
+                                    System.err.println("Error fetching weather from CNN: " + ex.getCause().getMessage());
+                                    return null;
+                                }))
                 .thenRun(() -> {
                     println("All requests completed!");
                     var finished = LocalDateTime.now();

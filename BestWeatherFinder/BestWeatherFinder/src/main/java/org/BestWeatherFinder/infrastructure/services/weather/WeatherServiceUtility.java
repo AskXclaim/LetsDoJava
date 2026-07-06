@@ -1,5 +1,6 @@
 package org.BestWeatherFinder.infrastructure.services.weather;
 
+import org.BestWeatherFinder.domain.exceptions.ServiceUnavailableException;
 import org.BestWeatherFinder.infrastructure.services.models.WeatherForecast;
 import org.BestWeatherFinder.infrastructure.services.weather.enums.City;
 import org.BestWeatherFinder.infrastructure.services.weather.enums.Forecast;
@@ -64,5 +65,15 @@ public final class WeatherServiceUtility {
      */
     public static void sleep() throws InterruptedException {
         Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5000));
+    }
+
+    /**
+     * Randomly throws a ServiceUnavailableException to simulate service instability.
+     * @param serviceName the name of the service to simulate failure for
+     */
+    public static void simulateFailure(String serviceName) {
+        if (ThreadLocalRandom.current().nextInt(0, 4) == 0) { // 25% chance of failure
+            throw new ServiceUnavailableException(serviceName);
+        }
     }
 }
