@@ -1,4 +1,4 @@
-spring:
+  spring:
   application:
     name: store
     host: localhost

@@ -1,7 +1,7 @@
 package org.contactcentre.domain.exception;
 
-public class ClientDetailException extends Exception {
-    public ClientDetailException(String message) {
+public class NameException extends Exception {
+    public NameException(String message) {
         super(message);
     }
 }
