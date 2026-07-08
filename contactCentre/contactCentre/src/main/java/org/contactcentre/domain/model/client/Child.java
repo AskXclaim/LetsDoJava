@@ -1,4 +1,4 @@
-package org.contactcentre.domain.model;
+package org.contactcentre.domain.model.client;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -28,7 +28,7 @@ public class Child extends Client {
         this.dateOfBirth = dateOfBirth;
     }
 
-    private static void validateDateOfBirth(LocalDate dateOfBirth) throws DateOfBirthException {
+    private  void validateDateOfBirth(LocalDate dateOfBirth) throws DateOfBirthException {
         if (dateOfBirth == null)
             throw new DateOfBirthException("Date of birth cannot be null");
         if (dateOfBirth.isAfter(LocalDate.now()))

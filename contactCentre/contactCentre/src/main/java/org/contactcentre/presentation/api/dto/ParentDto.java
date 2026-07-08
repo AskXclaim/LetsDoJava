@@ -1,0 +1,8 @@
+package org.contactcentre.presentation.api.dto;
+
+import lombok.Builder;
+import org.contactcentre.shared.Title;
+
+@Builder
+public record ParentDto(Long id, Title title, String firstName, String middleName, String lastName, String gender) {
+}
