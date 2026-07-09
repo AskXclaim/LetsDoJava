@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.ToString;
 import org.contactcentre.domain.contract.Client;
 import org.contactcentre.domain.exception.DateOfBirthException;
+import org.contactcentre.domain.exception.PersonalDetailException;
+import org.contactcentre.shared.Gender;
 
 import java.time.LocalDate;
 
@@ -11,19 +13,15 @@ import java.time.LocalDate;
 @ToString(callSuper = true)
 public class Child extends Client {
     private final String genderAtBirth;
-    private LocalDate dateOfBirth;
+    private final LocalDate dateOfBirth;
+    private final Address address;
 
-    public Child(Long id, String firstName, String middleName, String lastName, String gender,
-                 String genderAtBirth, LocalDate dateOfBirth) throws DateOfBirthException {
+    public Child(Long id, String firstName, String middleName, String lastName, Gender gender,
+                 String genderAtBirth, LocalDate dateOfBirth, Address address) throws PersonalDetailException, DateOfBirthException {
         super(id, firstName, middleName, lastName, gender);
 
         this.genderAtBirth = genderAtBirth;
-
-        validateDateOfBirth(dateOfBirth);
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) throws DateOfBirthException {
+        this.address = address;
         validateDateOfBirth(dateOfBirth);
         this.dateOfBirth = dateOfBirth;
     }

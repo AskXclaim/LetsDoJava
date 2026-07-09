@@ -1,38 +1,33 @@
 package org.contactcentre.domain.contract;
 
 import lombok.*;
-import org.contactcentre.domain.exception.NameException;
+import org.contactcentre.domain.exception.PersonalDetailException;
+import org.contactcentre.shared.Gender;
+
+import static org.contactcentre.shared.StringUtility.cleanValue;
 
 @Getter
-@Setter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public abstract class Client {
-    private Long id;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String gender;
+    private final Long id;
+    private final String firstName;
+    private final String middleName;
+    private final String lastName;
+    private final Gender gender;
 
-    public void setFirstName(String firstName) throws NameException {
-        if (isNameValid(firstName)) {
-            this.firstName = firstName;
-            return;
-        }
-
-        throw new NameException("First name cannot be null or empty");
+    public Client(Long id, String firstName, String middleName, String lastName, Gender gender) throws PersonalDetailException {
+        this.id = id;
+        validateName(firstName, "first name");
+        this.firstName = cleanValue(firstName);
+        this.middleName = cleanValue(middleName);
+        validateName(lastName, "last name");
+        this.lastName = cleanValue(lastName);
+        this.gender = gender;
     }
 
-    public void setLastName(String lastName) throws NameException {
-        if (isNameValid(lastName)) {
-            this.lastName = lastName;
-            return;
+    private void validateName(String fieldValue, String fieldName) throws PersonalDetailException {
+        if (fieldValue == null || fieldValue.isEmpty()) {
+            throw new PersonalDetailException(fieldName + " cannot be null or empty");
         }
-
-        throw new NameException("last name cannot be null or empty");
-    }
-
-    private boolean isNameValid(String name) {
-        return name != null && !name.isEmpty();
     }
 }

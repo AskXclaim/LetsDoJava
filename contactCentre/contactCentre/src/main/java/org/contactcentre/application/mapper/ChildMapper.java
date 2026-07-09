@@ -1,11 +1,13 @@
 package org.contactcentre.application.mapper;
 
+import org.contactcentre.domain.exception.AddressException;
+import org.contactcentre.domain.exception.PersonalDetailException;
 import org.contactcentre.domain.model.client.Child;
 import org.contactcentre.domain.exception.DateOfBirthException;
 import org.contactcentre.presentation.api.dto.ChildDto;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AddressMapper.class)
 public interface ChildMapper {
-    Child toEntity(ChildDto child) throws DateOfBirthException;
+    Child toEntity(ChildDto childDto) throws PersonalDetailException, DateOfBirthException, AddressException;
 }
