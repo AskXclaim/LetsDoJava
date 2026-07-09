@@ -10,4 +10,9 @@ public class ChildClientRepository implements ClientRepository<Child> {
     public long add(Child client) {
         return 0;
     }
+
+    @Override
+    public Iterable<Child> getByName() {
+        return null;
+    }
 }
