@@ -1,3 +1,6 @@
 spring:
   application:
     name: contactCentre
+
+  mongodb:
+    uri: mongodb://localhost:27017/vine-contact-centre

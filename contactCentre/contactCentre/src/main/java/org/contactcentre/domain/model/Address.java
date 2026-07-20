@@ -1,5 +1,6 @@
-package org.contactcentre.domain.model.client;
+package org.contactcentre.domain.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.contactcentre.domain.exception.AddressException;
@@ -16,6 +17,7 @@ public class Address {
     private final String country;
     private final String postCode;
 
+    @Builder
     public Address(String addressLineOne, String addressLineTwo, String city, String county, String country, String postCode)
             throws AddressException {
         validateField(addressLineOne, "Address Line One");

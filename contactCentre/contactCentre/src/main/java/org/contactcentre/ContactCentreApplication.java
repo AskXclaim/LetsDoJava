@@ -1,14 +1,14 @@
 package org.contactcentre;
 
-import org.contactcentre.application.service.AddChildService;
-import org.contactcentre.application.service.AddParentService;
+import org.contactcentre.application.service.RegisterChild;
 import org.contactcentre.domain.exception.AddressException;
 import org.contactcentre.domain.exception.DateOfBirthException;
 import org.contactcentre.domain.exception.PersonalDetailException;
 import org.contactcentre.domain.exception.TitleException;
-import org.contactcentre.presentation.api.dto.AddressDto;
-import org.contactcentre.presentation.api.dto.ChildDto;
-import org.contactcentre.presentation.api.dto.ParentDto;
+import org.contactcentre.presentation.dto.AddressDto;
+import org.contactcentre.presentation.dto.ChildDto;
+import org.contactcentre.presentation.dto.ParentDto;
+import org.contactcentre.presentation.dto.RegisterChildRequestDto;
 import org.contactcentre.shared.Gender;
 import org.contactcentre.shared.Title;
 import org.springframework.boot.SpringApplication;
@@ -23,35 +23,25 @@ public class ContactCentreApplication {
 
         //SpringApplication.run(ContactCentreApplication.class, args);
         var context = SpringApplication.run(ContactCentreApplication.class, args);
-        var childService = context.getBean(AddChildService.class);
-        childService.add(ChildDto.builder()
-                .id(1L).firstName("John")
-                .lastName("Doe").middleName("")
-                .gender(Gender.MALE).genderAtBirth("Male")
-                .dateOfBirth(LocalDate.of(1991, 2, 1))
-                .address(AddressDto.builder()
-                        .addressLineOne("123 Main St")
-                        .city("Anytown")
-                        .county("County")
-                        .country("UK")
-                        .postCode("12345")
+        var registerChild = context.getBean(RegisterChild.class);
+        var childToRegister = RegisterChildRequestDto.builder()
+                .child(ChildDto.builder()
+                        .firstName("Ryan").lastName("Smith").gender(Gender.MALE).genderAtBirth(Gender.MALE).dateOfBirth(LocalDate.of(2000, 1, 1))
+                        .address(AddressDto.builder()
+                                .addressLineOne("Flat 3").city("Leeds").county("West Yorkshire").country("UK").postCode("LS1 1AA").build()
+                        ).build())
+                .dad(ParentDto.builder()
+                        .title(Title.MR).firstName("John").lastName("Smith").gender(Gender.MALE).email("john.smith@example.com").phone("+4478654638192")
+                        .address(AddressDto.builder().addressLineOne("Flat 3").city("Leeds").county("West Yorkshire").country("UK").postCode("LS1 1AA").build())
                         .build())
-                .build());
+                .mom(ParentDto.builder()
+                        .title(Title.MRS).firstName("Jane").lastName("Smith").gender(Gender.FEMALE).email("jane.smith@example.com").phone("+4478654638192")
+                        .address(AddressDto.builder().addressLineOne("Flat 23").city("Leeds").county("West Yorkshire").country("UK").postCode("LS1 1AA").build())
+                        .build()).build();
 
-        var parentService = context.getBean(AddParentService.class);
-        parentService.add(ParentDto.builder()
-                .id(1L)
-                .title(Title.MRS).firstName("Jenny")
-                .lastName("Doe").middleName("")
-                .gender(Gender.FEMALE)
-                .address(AddressDto.builder()
-                        .addressLineOne("123 Main St")
-                        .city("Anytown")
-                        .county("County")
-                        .country("UK")
-                        .postCode("12345")
-                        .build())
-                .build());
+        var childId = registerChild.register(childToRegister);
+        System.out.println("Child ID: " + childId);
+
     }
 
 }

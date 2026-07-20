@@ -8,7 +8,7 @@ import org.contactcentre.domain.exception.AddressException;
 import org.contactcentre.domain.exception.DateOfBirthException;
 import org.contactcentre.domain.exception.PersonalDetailException;
 import org.contactcentre.domain.model.client.Child;
-import org.contactcentre.presentation.api.dto.ChildDto;
+import org.contactcentre.presentation.dto.ChildDto;
 import org.springframework.stereotype.Service;
 
 @Service

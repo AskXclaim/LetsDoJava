@@ -1,10 +1,10 @@
 package org.contactcentre.application.mapper;
 
 import org.contactcentre.domain.exception.AddressException;
+import org.contactcentre.domain.exception.DateOfBirthException;
 import org.contactcentre.domain.exception.PersonalDetailException;
 import org.contactcentre.domain.model.client.Child;
-import org.contactcentre.domain.exception.DateOfBirthException;
-import org.contactcentre.presentation.api.dto.ChildDto;
+import org.contactcentre.presentation.dto.ChildDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = AddressMapper.class)

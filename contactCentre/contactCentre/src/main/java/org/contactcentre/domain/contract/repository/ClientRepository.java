@@ -1,9 +1,10 @@
 package org.contactcentre.domain.contract.repository;
 
-import org.contactcentre.domain.contract.Client;
+import org.contactcentre.domain.contract.entity.Person;
 
 
-public interface ClientRepository<T extends Client> {
-    long add(T client);
-    Iterable<T> getByName();
+public interface ClientRepository<T extends Person> {
+    String add(T client);
+
+    Iterable<T> getByName(String name);
 }

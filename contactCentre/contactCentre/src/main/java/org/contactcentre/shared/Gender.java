@@ -5,5 +5,4 @@ public enum Gender {
     FEMALE,
     OTHER,
     PREFER_NOT_TO_SAY
-
 }
