@@ -25,7 +25,7 @@ public class ChildDocument {
     private final String lastName;
     private final Gender gender;
     @Field
-    private final String genderAtBirth;
+    private final Gender genderAtBirth;
     @Field
     private final LocalDate dateOfBirth;
     @Field

@@ -11,8 +11,11 @@ import org.contactcentre.domain.exception.PersonalDetailException;
 import org.contactcentre.domain.exception.TitleException;
 import org.contactcentre.domain.model.client.Child;
 import org.contactcentre.domain.model.client.Parent;
+import org.contactcentre.presentation.dto.ChildDto;
 import org.contactcentre.presentation.dto.RegisterChildRequestDto;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -20,26 +23,27 @@ public class RegisterChild implements RegisterChildService {
     private final PersonMapper mapper;
     private final ClientRepository<Child> childRepository;
     private final ClientRepository<Parent> parentRepository;
-    //Get Child details
-    // Address, DOB, Personal details
-    //Get Parent(s) details
-    //Validate Child details
-    //validate parent details
-    //save child details
-    //make sure, address and parents details are saved
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public String register(@NotNull RegisterChildRequestDto registerChildRequestDto)
             throws TitleException, PersonalDetailException, DateOfBirthException, AddressException {
-        Child child = mapper.toChild(registerChildRequestDto.child());
-        Parent dad = mapper.toParent(registerChildRequestDto.dad());
-        Parent mom = mapper.toParent(registerChildRequestDto.mom());
+        var dad = mapper.toParent(registerChildRequestDto.dad());
+        var mom = mapper.toParent(registerChildRequestDto.mom());
 
         var fatherId = parentRepository.add(dad);
         var motherId = parentRepository.add(mom);
-        child.setFatherId(fatherId);
-        child.setMotherId(motherId);
+
+        Child child = getChild(registerChildRequestDto.child(), fatherId, motherId);
 
         return childRepository.add(child);
+    }
+
+    private @NonNull Child getChild(@lombok.NonNull ChildDto childDto, String fatherId, String motherId)
+            throws PersonalDetailException, DateOfBirthException, AddressException {
+        Child child = mapper.toChild(childDto);
+        child.setFatherId(fatherId);
+        child.setMotherId(motherId);
+        return child;
     }
 }

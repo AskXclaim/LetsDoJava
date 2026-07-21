@@ -38,7 +38,7 @@ public class Child extends Person implements Addressable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    private void validateDateOfBirth(LocalDate dateOfBirth) throws DateOfBirthException {
+    private void validateDateOfBirth(LocalDate dateOfBirth) throws DateOfBirthException{
         if (dateOfBirth == null)
             throw new DateOfBirthException("Date of birth cannot be null");
         if (dateOfBirth.isAfter(LocalDate.now()))

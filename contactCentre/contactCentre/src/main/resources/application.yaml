@@ -3,4 +3,9 @@ spring:
     name: contactCentre
 
   mongodb:
-    uri: mongodb://localhost:27017/vine-contact-centre
+    uri: mongodb://127.0.0.1:27017/vine-contact-centre?replicaSet=rs0
+
+logging:
+  level:
+    org.springframework.transaction.interceptor: TRACE
+    org.springframework.data.mongodb.MongoTransactionManager: DEBUG
