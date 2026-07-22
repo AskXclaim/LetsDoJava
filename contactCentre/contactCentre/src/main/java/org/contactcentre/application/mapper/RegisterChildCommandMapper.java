@@ -13,7 +13,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface RegisterChildMapper {
+public interface RegisterChildCommandMapper {
     Address toAddress(AddressCommand addressCommand) throws AddressException;
     Child toChild(ChildCommand childCommand) throws PersonalDetailException, DateOfBirthException;
     @Mapping(source = "phoneNumber", target = "phone")

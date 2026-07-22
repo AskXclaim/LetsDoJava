@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.contactcentre.application.command.ChildCommand;
 import org.contactcentre.application.command.RegisterChildCommand;
 import org.contactcentre.application.contract.ChildRegistrationService;
-import org.contactcentre.application.mapper.RegisterChildMapper;
+import org.contactcentre.application.mapper.RegisterChildCommandMapper;
 import org.contactcentre.domain.contract.repository.ClientRepository;
 import org.contactcentre.domain.exception.DateOfBirthException;
 import org.contactcentre.domain.exception.PersonalDetailException;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class RegisterChild implements ChildRegistrationService {
-    private final RegisterChildMapper mapper;
+    private final RegisterChildCommandMapper mapper;
     private final ClientRepository<Child> childRepository;
     private final ClientRepository<Parent> parentRepository;
 
