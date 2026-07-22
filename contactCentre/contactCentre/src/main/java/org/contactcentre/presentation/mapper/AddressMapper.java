@@ -1,4 +1,4 @@
-package org.contactcentre.application.mapper;
+package org.contactcentre.presentation.mapper;
 
 import org.contactcentre.domain.exception.AddressException;
 import org.contactcentre.domain.model.Address;
@@ -7,5 +7,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface AddressMapper {
-    Address toAdress(AddressDto addressDto) throws AddressException;
+    Address toAddress(AddressDto addressDto) throws AddressException;
 }

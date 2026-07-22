@@ -33,7 +33,7 @@ public class Parent extends Person implements Addressable {
     }
 
     private void validateContactMeans(String phone, String email) throws PersonalDetailException {
-        if (phone == null || phone.isBlank() && email == null || email.isBlank()) {
+        if ((phone == null || phone.isBlank()) && (email == null || email.isBlank())) {
             throw new PersonalDetailException("Both phone and email cannot be null or blank");
         }
     }

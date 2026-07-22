@@ -1,47 +1,41 @@
 package org.contactcentre.application.service;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import org.contactcentre.application.contract.RegisterChildService;
-import org.contactcentre.application.mapper.PersonMapper;
+import org.contactcentre.application.command.ChildCommand;
+import org.contactcentre.application.command.RegisterChildCommand;
+import org.contactcentre.application.contract.ChildRegistrationService;
+import org.contactcentre.application.mapper.RegisterChildMapper;
 import org.contactcentre.domain.contract.repository.ClientRepository;
-import org.contactcentre.domain.exception.AddressException;
 import org.contactcentre.domain.exception.DateOfBirthException;
 import org.contactcentre.domain.exception.PersonalDetailException;
-import org.contactcentre.domain.exception.TitleException;
 import org.contactcentre.domain.model.client.Child;
 import org.contactcentre.domain.model.client.Parent;
-import org.contactcentre.presentation.dto.ChildDto;
-import org.contactcentre.presentation.dto.RegisterChildRequestDto;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
-public class RegisterChild implements RegisterChildService {
-    private final PersonMapper mapper;
+public class RegisterChild implements ChildRegistrationService {
+    private final RegisterChildMapper mapper;
     private final ClientRepository<Child> childRepository;
     private final ClientRepository<Parent> parentRepository;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String register(@NotNull RegisterChildRequestDto registerChildRequestDto)
-            throws TitleException, PersonalDetailException, DateOfBirthException, AddressException {
-        var dad = mapper.toParent(registerChildRequestDto.dad());
-        var mom = mapper.toParent(registerChildRequestDto.mom());
+    public String register(RegisterChildCommand registerChildCommand) throws PersonalDetailException, DateOfBirthException {
+        var father = mapper.toParent(registerChildCommand.father());
+        var mother = mapper.toParent(registerChildCommand.mother());
 
-        var fatherId = parentRepository.add(dad);
-        var motherId = parentRepository.add(mom);
+        var fatherId = parentRepository.add(father);
+        var motherId = parentRepository.add(mother);
 
-        Child child = getChild(registerChildRequestDto.child(), fatherId, motherId);
+        Child child = getChild(registerChildCommand.child(), fatherId, motherId);
 
         return childRepository.add(child);
     }
 
-    private @NonNull Child getChild(@lombok.NonNull ChildDto childDto, String fatherId, String motherId)
-            throws PersonalDetailException, DateOfBirthException, AddressException {
-        Child child = mapper.toChild(childDto);
+    private Child getChild(ChildCommand childCommand, String fatherId, String motherId) throws PersonalDetailException, DateOfBirthException {
+        var child = mapper.toChild(childCommand);
         child.setFatherId(fatherId);
         child.setMotherId(motherId);
         return child;

@@ -1,4 +1,4 @@
-package org.contactcentre.application.mapper;
+package org.contactcentre.presentation.mapper;
 
 import org.contactcentre.domain.exception.AddressException;
 import org.contactcentre.domain.exception.DateOfBirthException;
